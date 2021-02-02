@@ -8,6 +8,11 @@ export const metadataSelector = createSelector(
   state => state.meta
 );
 
+export const userDataSelector = createSelector(
+  rootSelector,
+  state => state.user
+);
+
 export const ownerIdSelector = createSelector(
   metadataSelector,
   state => state.ownerId
@@ -26,5 +31,13 @@ export const cooldownSelector = createSelector(
   state => state.cooldown
 );
 
+export const selectMatchQueue = createSelector(
+  rootSelector,
+  state => state.matchQueue
+);
+
 export const selectCooldownById = (userId: string) =>
   createSelector(cooldownSelector, state => state[userId]);
+
+export const selectUserById = (userId: string) =>
+  createSelector(userDataSelector, state => state[userId] || undefined);

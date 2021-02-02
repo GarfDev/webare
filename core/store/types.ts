@@ -1,3 +1,4 @@
+import { Conversation } from 'core/firebase/firestore/collections/conversation';
 import CommandListenerMeta from 'types/CommandListenerMeta';
 import { ActionType } from 'typesafe-actions';
 import * as actions from './actions';
@@ -6,6 +7,17 @@ export type ApplicationActions = ActionType<typeof actions>;
 
 export interface UserCooldownState {
   [command: string]: number;
+}
+
+export type MatchQueueState = string[];
+
+export interface UserConversationState {
+  activeConversation: Conversation | null;
+  conversations: Conversation[];
+}
+
+export interface UserState {
+  [userId: string]: UserConversationState;
 }
 
 export interface CooldownState {
@@ -25,4 +37,6 @@ export interface MetaDataState {
 export interface ApplicationRootState {
   meta: MetaDataState;
   cooldown: CooldownState;
+  matchQueue: MatchQueueState;
+  user: UserState;
 }

@@ -1,3 +1,4 @@
+import uniqid from 'uniqid';
 import {
   all,
   call,
@@ -11,6 +12,8 @@ import {
 import { sendMessage } from 'core/client';
 import {
   initApplicationSuccess,
+  matchCouple,
+  matchCoupleSuccess,
   processAsyncCommand,
   processQueuedCommand,
   verifyCommand as verifyCommandAction
@@ -18,11 +21,41 @@ import {
 import ActionTypes from './actionTypes';
 // Import commands
 import { Commands } from 'types';
-import { getLogger, measureElapsed } from 'utils';
+import {
+  fromRootPath,
+  backgroundRunnerRegister,
+  measureElapsed,
+  getLogger
+} from 'utils';
 import { getCommand, getPrefix } from 'utils/messages';
 import { commandListenerRegister } from 'utils/command';
 import { useDispatch, useSelector } from '@hooks';
 import { selectCommandByName } from './selectors';
+import { getConversationCollection } from 'core/firebase/firestore/collections/conversation/utils';
+import { Conversation } from 'core/firebase/firestore/collections/conversation';
+import { getDMChannelByUserId } from 'listeners/message/utils';
+
+function* callMatchCouple({ payload }: ReturnType<typeof matchCouple>) {
+  const { firstUser, secUser } = payload;
+
+  // Add new conversation to firestore
+  const conversationRef = getConversationCollection();
+  const newConversationId = uniqid();
+  const newConversation: Conversation = {
+    id: newConversationId,
+    participants: [firstUser, secUser],
+    allowed_attachments: []
+  };
+
+  yield conversationRef.doc(newConversationId).set(newConversation);
+  // Send message to new user
+  const firstUserDM = yield getDMChannelByUserId(firstUser);
+  const secUserDM = yield getDMChannelByUserId(secUser);
+  yield firstUserDM?.send('Found a match, you can start to chat');
+  yield secUserDM?.send('Found a match, you can start to chat');
+
+  yield put(matchCoupleSuccess(newConversationId, firstUser, secUser));
+}
 
 function* callInitApplication() {
   const logger = getLogger();
@@ -33,6 +66,10 @@ function* callInitApplication() {
   const elapsed = measure();
 
   logger.info(`Take ${elapsed}ms to initialize application`);
+
+  // Register Background Runners
+  const backgroundRunnersPath = fromRootPath('runners');
+  backgroundRunnerRegister(backgroundRunnersPath);
 
   yield put(initApplicationSuccess());
 }
@@ -128,7 +165,8 @@ function* asyncCommandSaga() {
 function* rootSaga() {
   yield all([
     takeEvery(ActionTypes.VERIFY_COMMAND, verifyCommand),
-    takeLeading(ActionTypes.INIT_APPLICATION, callInitApplication)
+    takeLeading(ActionTypes.INIT_APPLICATION, callInitApplication),
+    takeEvery(ActionTypes.MATCH_COUPLE, callMatchCouple)
   ]);
   // Spawn Command Handlers
   yield spawn(asyncCommandSaga);

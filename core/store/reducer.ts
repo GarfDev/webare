@@ -1,13 +1,19 @@
+import _ from 'lodash';
+import { Conversation } from 'core/firebase/firestore/collections/conversation';
 import ActionTypes from './actionTypes';
 import {
   ApplicationRootState,
   ApplicationActions,
   CommandMetaState,
-  MetaDataState
+  MetaDataState,
+  UserConversationState,
+  UserState
 } from './types';
 
 const initialRootState: ApplicationRootState = {
+  user: {},
   cooldown: {},
+  matchQueue: [],
   meta: {
     commands: {},
     defaultPrefix: process.env.DEFAULT_PREFIX || '',
@@ -45,9 +51,9 @@ const rootReducer = (
         meta: metaState
       };
     }
-    //
-    // COOLDOWN CASES
-    //
+    /**
+     * COOLDOWN CASE
+     */
     case ActionTypes.ADD_COOLDOWN: {
       const { userId, lastCommandTime, command } = action.payload;
 
@@ -59,6 +65,127 @@ const rootReducer = (
             [command]: lastCommandTime
           }
         }
+      };
+    }
+    /**
+     * USER-CONVERSATION CASES
+     */
+    case ActionTypes.CACHE_USER_CONVERSATION: {
+      const { userId, conversation } = action.payload;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          [userId]: conversation
+        }
+      };
+    }
+    ///
+    case ActionTypes.ADD_USER_TO_MATCH_QUEUE: {
+      const { userId } = action.payload;
+      return {
+        ...state,
+        matchQueue: [...state.matchQueue, userId]
+      };
+    }
+    //
+    case ActionTypes.MATCH_COUPLE_SUCCESS: {
+      const { id, firstUser, secUser } = action.payload;
+
+      const newConversation: Conversation = {
+        id,
+        participants: [firstUser, secUser],
+        allowed_attachments: []
+      };
+
+      const newFirstUserConversation: Conversation = {
+        id,
+        participants: [secUser],
+        allowed_attachments: []
+      };
+
+      const newSecUserConversation: Conversation = {
+        id,
+        participants: [firstUser],
+        allowed_attachments: []
+      };
+
+      const newFirstUserConversationState: UserConversationState = {
+        activeConversation: newFirstUserConversation,
+        conversations: [newConversation]
+      };
+
+      const newSecUserConversationState: UserConversationState = {
+        activeConversation: newSecUserConversation,
+        conversations: [newConversation]
+      };
+
+      // Add new conversation to cached
+      return {
+        ...state,
+        matchQueue: state.matchQueue.filter(
+          id => !(id === firstUser || id === secUser)
+        ),
+        user: {
+          ...state.user,
+          [firstUser]: newFirstUserConversationState,
+          [secUser]: newSecUserConversationState
+        }
+      };
+    }
+    //
+    case ActionTypes.REMOVE_CACHED_CONVERSATION: {
+      const { userId, conversationId } = action.payload;
+
+      const newUserState: UserState = _.cloneDeep(state.user);
+      const cachedUserConversation = newUserState[userId];
+
+      // Remove this conversation for participants
+      cachedUserConversation.activeConversation?.participants.forEach(
+        async participant => {
+          const cachedParticipantConversation = newUserState[participant];
+          if (!cachedParticipantConversation) return;
+
+          cachedParticipantConversation.conversations = cachedParticipantConversation.conversations.filter(
+            conversation => conversation.id === conversationId
+          );
+
+          if (!cachedParticipantConversation.conversations.length) {
+            cachedParticipantConversation.activeConversation = null;
+          } else {
+            const isCurrentConversation =
+              cachedParticipantConversation.activeConversation?.id !==
+              conversationId;
+
+            if (isCurrentConversation) {
+              cachedParticipantConversation.activeConversation =
+                cachedParticipantConversation.conversations[0];
+            }
+          }
+        }
+      );
+
+      // Remove this conversation for current user
+      cachedUserConversation.conversations = cachedUserConversation.conversations.filter(
+        conversation => conversation.id !== conversationId
+      );
+
+      if (!cachedUserConversation.conversations.length) {
+        cachedUserConversation.activeConversation = null;
+      } else {
+        const isCurrentConversation =
+          cachedUserConversation.activeConversation?.id === conversationId;
+
+        if (isCurrentConversation) {
+          cachedUserConversation.activeConversation =
+            cachedUserConversation.conversations[0];
+        }
+      }
+
+      // Return new state
+      return {
+        ...state,
+        user: newUserState
       };
     }
     //

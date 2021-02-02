@@ -1,7 +1,8 @@
 import { verifyCommand } from '@actions';
 import { useDispatch } from '@hooks';
 import { Message } from 'discord.js';
-import { checkFromSelf, checkMessage } from '../utils/messages';
+import { checkFromSelf, checkMessage } from 'utils/messages';
+import messageHandler from './handler';
 
 async function onMessage(message: Message): Promise<void> {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ async function onMessage(message: Message): Promise<void> {
 
   // Check if this is a command
   const isCommand = checkMessage(message.content);
-  if (!isCommand) return;
+  if (!isCommand) messageHandler(message);
 
   // Dispatch command
   dispatch(verifyCommand(message));
