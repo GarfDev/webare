@@ -14,7 +14,7 @@
     "clean": "prettier --config .prettierrc.js '**/*.ts' --write",
     "lint": "eslint . --fix --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
-    "build": "ttsc -b -v",
+    "build": "ttsc -b -v && cp -a ./translations/. ./dist/translations/",
     "doctor": "yarn build && clinic doctor -- node ./dist/index.js",
     "flame": "yarn build && clinic flame -- node ./dist/index.js",
     "bubbleprof": "yarn build && clinic bubbleprof -- node ./dist/index.js",
