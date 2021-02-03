@@ -16,7 +16,10 @@ async function onMessage(message: Message): Promise<void> {
 
   // Check if this is a command
   const isCommand = checkMessage(message.content);
-  if (!isCommand) messageHandler(message);
+  if (!isCommand) {
+    messageHandler(message);
+    return;
+  }
 
   // Dispatch command
   dispatch(verifyCommand(message));
