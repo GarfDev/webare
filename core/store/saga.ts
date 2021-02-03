@@ -34,6 +34,8 @@ import { selectCommandByName } from './selectors';
 import { getConversationCollection } from 'core/firebase/firestore/collections/conversation/utils';
 import { Conversation } from 'core/firebase/firestore/collections/conversation';
 import { getDMChannelByUserId } from 'listeners/message/utils';
+import { successEmbedGenerator } from 'utils/embed';
+import { i } from 'core/internationalize';
 
 function* callMatchCouple({ payload }: ReturnType<typeof matchCouple>) {
   const { firstUser, secUser } = payload;
@@ -51,8 +53,16 @@ function* callMatchCouple({ payload }: ReturnType<typeof matchCouple>) {
   // Send message to new user
   const firstUserDM = yield getDMChannelByUserId(firstUser);
   const secUserDM = yield getDMChannelByUserId(secUser);
-  yield firstUserDM?.send('Found a match, you can start to chat');
-  yield secUserDM?.send('Found a match, you can start to chat');
+  yield firstUserDM?.send(
+    successEmbedGenerator({
+      description: i('matched')
+    })
+  );
+  yield secUserDM?.send(
+    successEmbedGenerator({
+      description: i('matched')
+    })
+  );
 
   yield put(matchCoupleSuccess(newConversationId, firstUser, secUser));
 }
@@ -61,8 +71,8 @@ function* callInitApplication() {
   const logger = getLogger();
   // Pre-load commands from commands folder
   const measure = measureElapsed();
-  logger.info(`Preloaded commands`);
   yield commandListenerRegister();
+  logger.info(`Preloaded commands`);
   const elapsed = measure();
 
   logger.info(`Take ${elapsed}ms to initialize application`);

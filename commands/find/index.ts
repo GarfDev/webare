@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from '@hooks';
 import { addUserToMatchQueue } from 'core/store/actions';
 import { restoreConversations } from 'listeners/message/utils';
 import { selectMatchQueue } from 'core/store/selectors';
+import { i } from 'core/internationalize';
+import { getPrefix } from 'utils/messages';
 
 const find: CommandHandler = async message => {
   const dispatch = useDispatch();
@@ -14,7 +16,7 @@ const find: CommandHandler = async message => {
 
   if (conversation?.activeConversation) {
     return failedEmbedGenerator({
-      description: 'You already in a conversation'
+      description: i('command.find.error.already_in_conversation', getPrefix())
     });
   }
 
@@ -22,14 +24,14 @@ const find: CommandHandler = async message => {
 
   if (matchQueue.includes(message.author.id)) {
     return failedEmbedGenerator({
-      description: 'Still finding partner for you..'
+      description: i('command.find.error.already_in_match_queue')
     });
   }
 
   dispatch(addUserToMatchQueue(message.author.id));
 
   return successEmbedGenerator({
-    description: `Added you to job queue`
+    description: i('command.find.successfully_started')
   });
 };
 
@@ -39,7 +41,7 @@ export default listenerGenerator({
   queued: true,
   handler: find,
   type: ListenerType.GENERAL,
-  helpMessage: 'This command return a pong when you call it (Developer only)',
-  usageMessage: 'This command return a pong when you call it (Developer only)',
+  helpMessage: i('command.find.short_help'),
+  usageMessage: i('command.find.long_help', getPrefix()),
   dmRequired: true
 });

@@ -1,0 +1,26 @@
+{   
+    "matched": "**Ghép đôi thành công, bạn có thể bắt đầu chat**",
+    "conversation_is_ended": "Đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
+    "error.attachments_acceptance_required": "Tất cả mọi người cần đồng ý nhận đính kèm trước, sử dụng lệnh `%sallow` để đồng ý",
+    "error.cannot_send_message_to_this_user": "Không thể gửi tin nhắn đến người dùng vào lúc này",
+    "error.not_in_any_conversation": "Bạn chưa ghép đôi với ai cả.",
+    
+    "command.allow.short_help": "Kích hoạt nhận file đính kèm",
+    "command.allow.long_help": "Kích hoạt nhận file đính kèm\n**[USAGE]**\n`%sallow` - Chỉ có thể sử dụng khi đã ghép đôi",
+    "command.allow.already_allowed_attachments": "Bạn đã kích hoạt nhận file đính kèm rồi.",
+    "command.allow.partner_allowed_attachments": "Đối phương đã bật nhận file đính kèm.. [%s/%s]",
+    "command.allow.activated_attachments": "Đã kích hoạt gửi/nhận file đính kèm cho cuộc trò chuyện này",
+
+    "command.find.short_help": "Dùng để bắt đầu ghép đôi",
+    "command.find.long_help": "Dùng để bắt đầu ghép đôi\n**[USAGE]**\n`%sfind` - Chỉ có thể sử dụng khi chưa ghép đôi",
+    "command.find.error.already_in_match_queue": "Đang tiến hành ghép đôi",
+    "command.find.error.already_in_conversation": "Bạn cần thoát bằng lệnh `%sleave` trước để sử dụng lệnh này.",
+    "command.find.successfully_started": "Bắt đầu tiến trình ghép đôi",
+
+    "command.leave.short_help": "Thoát khỏi cuộc trò chuyện hiện tại",
+    "command.leave.long_help": "Thoát khỏi cuộc trò chuyện hiện tại\n**[USAGE]**\n`%sleave` - Chỉ có thể sử dụng khi đã ghép đôi",
+
+    "command.help.short_help": "Tra về danh sách này nè",
+    "command.help.long_help": "Tra về danh sách này nè\n**[USAGE]**\n`%shelp`"
+
+}

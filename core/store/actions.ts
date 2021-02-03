@@ -3,6 +3,7 @@ import { action } from 'typesafe-actions';
 import { CommandHandler, CommandListenerMeta } from 'types';
 import ActionTypes from './actionTypes';
 import { UserConversationState } from './types';
+import { Conversation } from 'core/firebase/firestore/collections/conversation';
 
 /**
  * General actions
@@ -68,6 +69,11 @@ export const removeCachedConversation = (
   userId: string,
   conversationId: string
 ) => action(ActionTypes.REMOVE_CACHED_CONVERSATION, { userId, conversationId });
+
+export const updateCachedConversation = (
+  userId: string,
+  conversation: Conversation
+) => action(ActionTypes.UPDATE_CACHED_CONVERSATION, { userId, conversation });
 
 export const matchCouple = (firstUser: string, secUser: string) =>
   action(ActionTypes.MATCH_COUPLE, { firstUser, secUser });

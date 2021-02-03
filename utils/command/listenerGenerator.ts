@@ -1,3 +1,4 @@
+import * as Yup from 'yup';
 import { useDispatch, useSelector } from '@hooks';
 import ListenerType from 'constants/ListenerType';
 import {
@@ -21,7 +22,7 @@ const listenerGenerator: CommandListener = ({
   handler,
   helpMessage,
   usageMessage,
-  validationSchema,
+  validationSchema = Yup.array().min(0).max(0),
   requiredPermissions = [],
   guildRequired = false,
   dmRequired = false,

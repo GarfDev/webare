@@ -6,6 +6,9 @@ export const getConversationCollection = () => {
   return getFirebase().firestore().collection(CONVERSATION);
 };
 
+export const getConversation = (id: string) =>
+  getConversationCollection().doc(id);
+
 export const getAllConversationsByParticipantId = async (id: string) => {
   const result = await getConversationCollection()
     .where('participants', 'array-contains', id)
@@ -17,4 +20,11 @@ export const getAllConversationsByParticipantId = async (id: string) => {
 export const removeConversationById = async (id: string) => {
   const conversationRef = getConversationCollection();
   await conversationRef.doc(id).delete();
+};
+
+export const updateConversationById = (id: string) => (
+  newConversation: Conversation
+) => {
+  const conversation = getConversation(id);
+  conversation.set(newConversation);
 };

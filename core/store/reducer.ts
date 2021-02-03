@@ -147,14 +147,14 @@ const rootReducer = (
           if (!cachedParticipantConversation) return;
 
           cachedParticipantConversation.conversations = cachedParticipantConversation.conversations.filter(
-            conversation => conversation.id === conversationId
+            conversation => conversation.id !== conversationId
           );
 
           if (!cachedParticipantConversation.conversations.length) {
             cachedParticipantConversation.activeConversation = null;
           } else {
             const isCurrentConversation =
-              cachedParticipantConversation.activeConversation?.id !==
+              cachedParticipantConversation.activeConversation?.id ===
               conversationId;
 
             if (isCurrentConversation) {
@@ -162,6 +162,7 @@ const rootReducer = (
                 cachedParticipantConversation.conversations[0];
             }
           }
+          newUserState[participant] = cachedParticipantConversation;
         }
       );
 
@@ -181,8 +182,57 @@ const rootReducer = (
             cachedUserConversation.conversations[0];
         }
       }
-
+      newUserState[userId] = cachedUserConversation;
       // Return new state
+      return {
+        ...state,
+        user: newUserState
+      };
+    }
+    //
+    case ActionTypes.UPDATE_CACHED_CONVERSATION: {
+      const { userId, conversation } = action.payload;
+
+      const newUserState: UserState = _.cloneDeep(state.user);
+      const newUserConversation = newUserState[userId];
+
+      newUserConversation.conversations = newUserConversation.conversations.filter(
+        cachedConversation => cachedConversation.id !== conversation.id
+      );
+      newUserConversation.conversations.push(conversation);
+
+      const isCurrentConversation =
+        newUserConversation.activeConversation?.id === conversation.id;
+
+      if (isCurrentConversation) {
+        newUserConversation.activeConversation = {
+          id: conversation.id,
+          participants: conversation.participants.filter(
+            item => item !== userId
+          ),
+          allowed_attachments: conversation.allowed_attachments
+        };
+      }
+
+      // Update changes to all cached participants
+      conversation.participants.forEach(async participant => {
+        const participantConversation = newUserState[participant];
+
+        const isCurrentConversation =
+          participantConversation.activeConversation?.id === conversation.id;
+
+        if (isCurrentConversation) {
+          participantConversation.activeConversation = {
+            id: conversation.id,
+            participants: conversation.participants.filter(
+              item => item !== participant
+            ),
+            allowed_attachments: conversation.allowed_attachments
+          };
+        }
+      });
+
+      // Return state
       return {
         ...state,
         user: newUserState

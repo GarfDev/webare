@@ -6,30 +6,44 @@ import {
   getDMChannelByUserId,
   restoreConversations
 } from 'listeners/message/utils';
-import { selectUserById } from 'core/store/selectors';
-import { useSelector } from '@hooks';
 import { removeConversationById } from 'core/firebase/firestore/collections/conversation/utils';
+import { useDispatch } from '@hooks';
+import { removeCachedConversation } from 'core/store/actions';
+import { i } from 'core/internationalize';
+import { getPrefix } from 'utils/messages';
 
 const leave: CommandHandler = async message => {
-  await restoreConversations(message.author.id);
-  const conversation = useSelector(selectUserById(message.author.id));
+  const dispatch = useDispatch();
+  const conversation = await restoreConversations(message.author.id);
 
   if (!conversation?.activeConversation) {
     return failedEmbedGenerator({
-      description: "You're not in any conversation"
+      description: i('error.not_in_any_conversation')
     });
   }
+
+  await removeConversationById(conversation.activeConversation.id); // Keep this free since we don't need to wait for it
 
   conversation.activeConversation.participants.forEach(async participant => {
     const user = await getDMChannelByUserId(participant);
     setTimeout(() => {
-      user.send('**Your partner is leaving the chat..**');
-    }, 100);
+      user.send(
+        successEmbedGenerator({
+          description: i('conversation_is_ended', getPrefix())
+        })
+      );
+    }, 1000);
   });
 
-  removeConversationById(conversation.activeConversation.id); // Keep this free since we don't need to wait for it
+  dispatch(
+    removeCachedConversation(
+      message.author.id,
+      conversation.activeConversation.id
+    )
+  );
+
   return successEmbedGenerator({
-    description: '**This conversation is ended..**'
+    description: i('conversation_is_ended', getPrefix())
   });
 };
 
@@ -38,7 +52,7 @@ export default listenerGenerator({
   cooldown: 10,
   queued: true,
   handler: leave,
-  type: ListenerType.DEVELOPER,
-  helpMessage: 'This command to leave voice channel (Developer only)',
-  usageMessage: 'This command return a pong when you call it (Developer only)'
+  type: ListenerType.GENERAL,
+  helpMessage: i('command.leave.short_help'),
+  usageMessage: i('command.leave.long_help', getPrefix())
 });

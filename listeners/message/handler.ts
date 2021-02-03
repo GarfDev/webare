@@ -1,4 +1,7 @@
+import { i } from 'core/internationalize';
 import { Message } from 'discord.js';
+import { failedEmbedGenerator } from 'utils/embed';
+import { getPrefix } from 'utils/messages';
 import { getDMChannelByUserId, restoreConversations } from './utils';
 
 const messageHandler = async (message: Message) => {
@@ -19,22 +22,34 @@ const messageHandler = async (message: Message) => {
           async participant => {
             const channel = await getDMChannelByUserId(participant);
             if (!channel)
-              message.channel.send('Cannot send message to this user');
-            channel?.send(message.content, {
+              message.channel.send(
+                failedEmbedGenerator({
+                  description: i('error.cannot_send_message_to_this_user')
+                })
+              );
+            channel?.send(message.content.toString(), {
               files: attachments
             });
           }
         );
       } else {
-        message.channel.send('Everyone much accept attachments first.');
+        message.channel.send(
+          failedEmbedGenerator({
+            description: i('error.attachments_acceptance_required', getPrefix())
+          })
+        );
       }
     } else {
       cachedUserConversation.activeConversation?.participants.forEach(
         async participant => {
           const channel = await getDMChannelByUserId(participant);
           if (!channel)
-            message.channel.send('Cannot send message to this user');
-          channel?.send(message.content);
+            message.channel.send(
+              failedEmbedGenerator({
+                description: i('error.cannot_send_message_to_this_user')
+              })
+            );
+          channel?.send(message.content.toString());
         }
       );
     }

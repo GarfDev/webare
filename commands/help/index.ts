@@ -6,13 +6,15 @@ import ListenerType from 'constants/ListenerType';
 import { commandMetaSelector } from 'core/store/selectors';
 import { addCommandsToEmbed, getCommandMetaByType } from './utils';
 import Colors from 'constants/Colors';
+import { i } from 'core/internationalize';
+import { getPrefix } from 'utils/messages';
 
 const help: CommandHandler = async message => {
   const commandMeta = useSelector(commandMetaSelector);
   let returnEmbed = embedGenerator({});
 
   // Values mapped from props
-  const listenrerTypeObject = { ...ListenerType };
+  const listenerTypeObject = { ...ListenerType };
 
   // Settings up embed
   returnEmbed.setColor(Colors.DARK_BLUE);
@@ -21,7 +23,7 @@ const help: CommandHandler = async message => {
 
   // Add Commands to embed
 
-  Object.keys(listenrerTypeObject).forEach(type => {
+  Object.keys(listenerTypeObject).forEach(type => {
     const commands = getCommandMetaByType(type as ListenerType)(commandMeta);
     returnEmbed = addCommandsToEmbed(
       returnEmbed,
@@ -38,6 +40,6 @@ export default listenerGenerator({
   name: 'help',
   handler: help,
   type: ListenerType.GENERAL,
-  helpMessage: 'Return a list of commands',
-  usageMessage: 'Return a list of commands'
+  helpMessage: i('command.help.short_help'),
+  usageMessage: i('command.help.long_help', getPrefix())
 });
