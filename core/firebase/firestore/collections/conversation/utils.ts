@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import getFirebase from 'core/firebase/getFirebase';
 import { CONVERSATION } from './constants';
 import { Conversation } from './types';
@@ -27,4 +28,14 @@ export const updateConversationById = (id: string) => (
 ) => {
   const conversation = getConversation(id);
   conversation.set(newConversation);
+};
+
+export const addIdToAcceptedAttachments = (
+  conversationId: string,
+  userId: string
+) => {
+  const conversation = getConversation(conversationId);
+  conversation.update({
+    allowed_attachments: firebase.firestore.FieldValue.arrayUnion(userId)
+  });
 };

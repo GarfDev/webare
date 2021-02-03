@@ -9,6 +9,7 @@ import {
   UserConversationState,
   UserState
 } from './types';
+import { updateUserConversationState } from './utils';
 
 const initialRootState: ApplicationRootState = {
   user: {},
@@ -194,44 +195,36 @@ const rootReducer = (
       const { userId, conversation } = action.payload;
 
       const newUserState: UserState = _.cloneDeep(state.user);
-      const newUserConversation = newUserState[userId];
+      const newUserConversation = _.cloneDeep(newUserState[userId]);
 
-      newUserConversation.conversations = newUserConversation.conversations.filter(
-        cachedConversation => cachedConversation.id !== conversation.id
+      const userConversation = _.cloneDeep(conversation);
+      userConversation.participants = userConversation.participants.filter(
+        id => id !== userId
       );
-      newUserConversation.conversations.push(conversation);
 
-      const isCurrentConversation =
-        newUserConversation.activeConversation?.id === conversation.id;
-
-      if (isCurrentConversation) {
-        newUserConversation.activeConversation = {
-          id: conversation.id,
-          participants: conversation.participants.filter(
-            item => item !== userId
-          ),
-          allowed_attachments: conversation.allowed_attachments
-        };
-      }
+      const newUserConventionState = updateUserConversationState(
+        newUserConversation,
+        userConversation,
+        conversation
+      );
 
       // Update changes to all cached participants
       conversation.participants.forEach(async participant => {
-        const participantConversation = newUserState[participant];
+        // Create new Conversation Object (and remove participant id)
+        const newConversation = _.cloneDeep(conversation);
+        newConversation.participants = newConversation.participants.filter(
+          id => id !== participant
+        );
 
-        const isCurrentConversation =
-          participantConversation.activeConversation?.id === conversation.id;
-
-        if (isCurrentConversation) {
-          participantConversation.activeConversation = {
-            id: conversation.id,
-            participants: conversation.participants.filter(
-              item => item !== participant
-            ),
-            allowed_attachments: conversation.allowed_attachments
-          };
-        }
+        const participantConversation = _.cloneDeep(newUserState[participant]);
+        const newParticipantConversation = updateUserConversationState(
+          participantConversation,
+          newConversation,
+          conversation
+        );
+        newUserState[participant] = newParticipantConversation;
       });
-
+      newUserState[userId] = newUserConventionState;
       // Return state
       return {
         ...state,

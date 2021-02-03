@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { CommandHandler } from 'types';
 import { listenerGenerator } from 'utils/command';
 import ListenerType from 'constants/ListenerType';
@@ -6,7 +7,7 @@ import {
   getDMChannelByUserId,
   restoreConversations
 } from 'listeners/message/utils';
-import { updateConversationById } from 'core/firebase/firestore/collections/conversation/utils';
+import { addIdToAcceptedAttachments } from 'core/firebase/firestore/collections/conversation/utils';
 import { Conversation } from 'core/firebase/firestore/collections/conversation';
 import { updateCachedConversation } from 'core/store/actions';
 import { useDispatch } from '@hooks';
@@ -15,7 +16,7 @@ import { getPrefix } from 'utils/messages';
 
 const allow: CommandHandler = async message => {
   const dispatch = useDispatch();
-  const conversation = await restoreConversations(message.author.id);
+  let conversation = await restoreConversations(message.author.id);
 
   if (!conversation?.activeConversation) {
     return failedEmbedGenerator({
@@ -33,10 +34,10 @@ const allow: CommandHandler = async message => {
     }
 
     const allowedAttachments =
-      (conversation.activeConversation?.allowed_attachments.length || 0) + 1;
+      (conversation.activeConversation.allowed_attachments.length || 0) + 1;
 
     const totalParticipants =
-      (conversation.activeConversation?.participants.length || 0) + 1;
+      (conversation.activeConversation.participants.length || 0) + 1;
 
     conversation.activeConversation.participants.forEach(async participant => {
       const user = await getDMChannelByUserId(participant);
@@ -64,12 +65,22 @@ const allow: CommandHandler = async message => {
       }
     });
 
-    const newConversationObj = conversation.conversations.find(
-      item => item.id === conversation.activeConversation?.id
-    ) as Conversation;
-    newConversationObj.allowed_attachments.push(message.author.id);
+    conversation = await restoreConversations(message.author.id);
+    const newConversationObj = _.cloneDeep(
+      conversation?.conversations.find(
+        item => item.id === conversation?.activeConversation?.id
+      ) as Conversation
+    );
+    if (!newConversationObj) return;
 
-    updateConversationById(newConversationObj.id)(newConversationObj);
+    newConversationObj.allowed_attachments = [
+      ...newConversationObj.allowed_attachments,
+      message.author.id
+    ];
+
+    console.log(newConversationObj.participants);
+
+    addIdToAcceptedAttachments(newConversationObj.id, message.author.id);
     dispatch(updateCachedConversation(message.author.id, newConversationObj));
 
     if (allowedAttachments < totalParticipants) {

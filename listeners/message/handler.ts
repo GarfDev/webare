@@ -8,13 +8,17 @@ const messageHandler = async (message: Message) => {
   if (message.guild) return;
   const cachedUserConversation = await restoreConversations(message.author.id);
   if (!cachedUserConversation?.activeConversation) {
-    message.channel.send('There no conversation found');
+    message.channel.send(
+      failedEmbedGenerator({
+        description: i('error.not_in_any_conversation', getPrefix())
+      })
+    );
   } else {
     const attachments = message.attachments.array();
 
     if (attachments.length) {
       const isEveryoneAllowedAttachments =
-        cachedUserConversation.activeConversation.allowed_attachments.length ===
+        cachedUserConversation.activeConversation.allowed_attachments.length >=
         cachedUserConversation.activeConversation.participants.length + 1;
 
       if (isEveryoneAllowedAttachments) {

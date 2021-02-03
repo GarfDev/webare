@@ -23,6 +23,12 @@ const leave: CommandHandler = async message => {
   }
 
   await removeConversationById(conversation.activeConversation.id); // Keep this free since we don't need to wait for it
+  dispatch(
+    removeCachedConversation(
+      message.author.id,
+      conversation.activeConversation.id
+    )
+  );
 
   conversation.activeConversation.participants.forEach(async participant => {
     const user = await getDMChannelByUserId(participant);
@@ -32,15 +38,8 @@ const leave: CommandHandler = async message => {
           description: i('participant_is_ended', getPrefix())
         })
       );
-    }, 1000);
+    }, 10);
   });
-
-  dispatch(
-    removeCachedConversation(
-      message.author.id,
-      conversation.activeConversation.id
-    )
-  );
 
   return successEmbedGenerator({
     description: i('conversation_is_ended', getPrefix())

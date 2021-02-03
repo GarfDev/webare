@@ -4,7 +4,7 @@
     "participant_is_ended": "Đối phương đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
     "error.attachments_acceptance_required": "Tất cả mọi người cần đồng ý nhận đính kèm trước, sử dụng lệnh `%sallow` để đồng ý",
     "error.cannot_send_message_to_this_user": "Không thể gửi tin nhắn đến người dùng vào lúc này",
-    "error.not_in_any_conversation": "Bạn chưa ghép đôi với ai cả.",
+    "error.not_in_any_conversation": "Bạn chưa ghép đôi với ai cả. có thể dùng lệnh `%afind` để bắt đầu.",
     
     "command.allow.short_help": "Kích hoạt nhận file đính kèm",
     "command.allow.long_help": "Kích hoạt nhận file đính kèm\n**[USAGE]**\n`%sallow` - Chỉ có thể sử dụng khi đã ghép đôi",
