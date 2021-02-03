@@ -29,7 +29,7 @@ const leave: CommandHandler = async message => {
     setTimeout(() => {
       user.send(
         successEmbedGenerator({
-          description: i('conversation_is_ended', getPrefix())
+          description: i('participant_is_ended', getPrefix())
         })
       );
     }, 1000);
