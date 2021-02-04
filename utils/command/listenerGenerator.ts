@@ -1,13 +1,6 @@
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from '@hooks';
 import ListenerType from 'constants/ListenerType';
-import {
-  DEFAULT_DEVELOPER_ERROR_MESSAGE,
-  DEFAULT_DM_REQUIRED_MESSAGE,
-  DEFAULT_EXECUTION_ERROR_MESSAGE,
-  DEFAULT_GUILD_REQUIRED_MESSAGE,
-  DEFAULT_PERMISSIONS_ERROR
-} from 'constants/messages';
 import { addCommandMeta, addCooldown } from 'core/store/actions';
 import { ownerIdSelector, selectCooldownById } from 'core/store/selectors';
 import { PermissionString } from 'discord.js';
@@ -15,6 +8,7 @@ import { CommandListener } from 'types';
 import { failedEmbedGenerator } from 'utils/embed';
 import inLast from 'utils/inLast';
 import { getLogger } from '..';
+import { i } from 'core/internationalize';
 
 const listenerGenerator: CommandListener = ({
   name,
@@ -40,14 +34,14 @@ const listenerGenerator: CommandListener = ({
     if (guildRequired) {
       if (!message?.guild)
         return failedEmbedGenerator({
-          description: DEFAULT_GUILD_REQUIRED_MESSAGE
+          description: i('error.guild_required')
         });
     }
     // Check if DM is required
     if (dmRequired) {
       if (message?.guild)
         return failedEmbedGenerator({
-          description: DEFAULT_DM_REQUIRED_MESSAGE
+          description: i('error.dm_required')
         });
     }
 
@@ -69,7 +63,7 @@ const listenerGenerator: CommandListener = ({
       const isDeveloper = developerId === message.author.id;
       if (!isDeveloper)
         return failedEmbedGenerator({
-          description: DEFAULT_DEVELOPER_ERROR_MESSAGE
+          description: i('error.developer_required')
         });
     }
 
@@ -87,7 +81,7 @@ const listenerGenerator: CommandListener = ({
         : true;
       if (!validPermissions)
         return failedEmbedGenerator({
-          description: DEFAULT_PERMISSIONS_ERROR
+          description: i('error.permission_error')
         });
     }
 
@@ -112,7 +106,7 @@ const listenerGenerator: CommandListener = ({
       ).toFixed(2);
       //////////////////////
       return failedEmbedGenerator({
-        description: `You need **${timeRemain}s** before can use this command again.`
+        description: i('error.cooldown_not_done', timeRemain)
       });
     }
 
@@ -126,7 +120,7 @@ const listenerGenerator: CommandListener = ({
       const logger = getLogger();
       logger.error(error.message);
       return failedEmbedGenerator({
-        description: DEFAULT_EXECUTION_ERROR_MESSAGE
+        description: i('error.execution_error')
       });
     }
   };

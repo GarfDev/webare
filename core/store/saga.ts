@@ -36,6 +36,7 @@ import { Conversation } from 'core/firebase/firestore/collections/conversation';
 import { getDMChannelByUserId } from 'listeners/message/utils';
 import { successEmbedGenerator } from 'utils/embed';
 import { i } from 'core/internationalize';
+import messageHandler from 'listeners/message/handler';
 
 function* callMatchCouple({ payload }: ReturnType<typeof matchCouple>) {
   const { firstUser, secUser } = payload;
@@ -72,9 +73,9 @@ function* callInitApplication() {
   // Pre-load commands from commands folder
   const measure = measureElapsed();
   yield commandListenerRegister();
-  logger.info(`Preloaded commands`);
   const elapsed = measure();
 
+  logger.info(`Preloaded commands`);
   logger.info(`Take ${elapsed}ms to initialize application`);
 
   // Register Background Runners
@@ -102,6 +103,9 @@ function commandObjTraveler(
     // In object. And use remain as function param
     // later
     if (!currentDepth[param]) {
+      if (i == 0) {
+        return [{}, progressedParams];
+      }
       break;
     }
 
@@ -122,16 +126,23 @@ function* verifyCommand({ payload }: ReturnType<typeof verifyCommandAction>) {
   const { message } = payload;
   ////////////////////////////
   const commands: Commands = yield commandListenerRegister();
-
   // Process command /////////
   const splicedCommand = message.content.split(' ');
+  if (!splicedCommand.length) {
+    yield messageHandler(message);
+    return;
+  }
+
   const command = getCommand(splicedCommand[0]);
-  if (!command.length) return;
   const [commandToRun, params] = commandObjTraveler(commands, splicedCommand);
   const commandMeta = useSelector(selectCommandByName(command));
 
   // Run command /////////////
-  if (!commandToRun && !commandMeta.name) return;
+  if (!Object.keys(commandToRun).length && !commandMeta?.name) {
+    yield messageHandler(message);
+    return;
+  }
+
   if (commandToRun.default && commandToRun.default instanceof Function) {
     const dispatch = useDispatch();
     if (commandMeta.queued) {

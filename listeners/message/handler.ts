@@ -53,7 +53,7 @@ const messageHandler = async (message: Message) => {
                 description: i('error.cannot_send_message_to_this_user')
               })
             );
-          channel?.send(message.content.toString());
+          channel?.send('\u200B' + message.content.toString());
         }
       );
     }

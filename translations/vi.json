@@ -2,10 +2,17 @@
     "matched": "**Ghép đôi thành công, bạn có thể bắt đầu chat**",
     "conversation_is_ended": "Đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
     "participant_is_ended": "Đối phương đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
+
     "error.attachments_acceptance_required": "Tất cả mọi người cần đồng ý nhận đính kèm trước, sử dụng lệnh `%sallow` để đồng ý",
     "error.cannot_send_message_to_this_user": "Không thể gửi tin nhắn đến người dùng vào lúc này",
-    "error.not_in_any_conversation": "Bạn chưa ghép đôi với ai cả. có thể dùng lệnh `%afind` để bắt đầu.",
-    
+    "error.not_in_any_conversation": "Bạn chưa ghép đôi với ai cả. có thể dùng lệnh `%sfind` để bắt đầu.",
+    "error.cooldown_not_done": "Còn **%s** giây nữa trước khi có thể sử dụng lệnh này",
+    "error.guild_required": "Lệnh này chỉ có thể sử dụng trong kênh chat của server",
+    "error.dm_required": "Lệnh này chỉ có thể sử dụng bằng cách chat trực tiếp với bot",
+    "error.developer_required": "Lệnh này chỉ có thể được sử dụng bởi Dev",
+    "error.permission_error": "Bạn không có đủ quyền để thực hiện lệnh này",
+    "error.execution_error": "Có lỗi đã xảy ra trong quá trình thực hiện lệnh này, vui lòng liên hệ Developer để được hỗ trợ.",
+
     "command.allow.short_help": "Kích hoạt nhận file đính kèm",
     "command.allow.long_help": "Kích hoạt nhận file đính kèm\n**[USAGE]**\n`%sallow` - Chỉ có thể sử dụng khi đã ghép đôi",
     "command.allow.already_allowed_attachments": "Bạn đã kích hoạt nhận file đính kèm rồi.",
@@ -22,6 +29,6 @@
     "command.leave.long_help": "Thoát khỏi cuộc trò chuyện hiện tại\n**[USAGE]**\n`%sleave` - Chỉ có thể sử dụng khi đã ghép đôi",
 
     "command.help.short_help": "Tra về danh sách này nè",
-    "command.help.long_help": "Tra về danh sách này nè\n**[USAGE]**\n`%shelp`"
+    "command.help.long_help": "Trả về danh sách các lệnh\n**[USAGE]**\n`%shelp`"
 
 }
