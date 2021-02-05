@@ -10,13 +10,13 @@ function coupleMatcher() {
 
   // Continue handle
   const dispatch = useDispatch();
-  let halfListLength = Math.round(matchQueue.length / 2);
+  let halfListLength = Math.round(matchQueue.length / 2 - 1);
   for (let i = 0; i < halfListLength; i++) {
     const [first, sec] = getTwoRandomNumber(matchQueue.length - 1);
     dispatch(matchCouple(matchQueue[first], matchQueue[sec]));
     matchQueue.splice(first, 1);
     matchQueue.splice(sec, 1);
-    halfListLength = Math.round(matchQueue.length / 2 - 1);
+    halfListLength = Math.round(matchQueue.length / 2);
   }
 }
 

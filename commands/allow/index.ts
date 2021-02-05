@@ -34,7 +34,7 @@ const allow: CommandHandler = async message => {
     }
 
     const allowedAttachments =
-      (conversation.activeConversation.allowed_attachments.length || 0) + 1;
+      conversation.activeConversation.allowed_attachments.length || 0;
 
     const totalParticipants =
       (conversation.activeConversation.participants.length || 0) + 1;
@@ -78,15 +78,13 @@ const allow: CommandHandler = async message => {
       message.author.id
     ];
 
-    console.log(newConversationObj.participants);
-
     addIdToAcceptedAttachments(newConversationObj.id, message.author.id);
     dispatch(updateCachedConversation(message.author.id, newConversationObj));
 
     if (allowedAttachments < totalParticipants) {
       return successEmbedGenerator({
         description: i(
-          'command.allow.partner_allowed_attachments',
+          'command.allow.user_allowed_attachments',
           allowedAttachments.toString(),
           totalParticipants.toString()
         )

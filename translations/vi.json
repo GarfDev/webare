@@ -1,6 +1,6 @@
 {   
     "matched": "**Ghép đôi thành công, bạn có thể bắt đầu chat**",
-    "conversation_is_ended": "Đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
+    "conversation_is_ended": "Bạn đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
     "participant_is_ended": "Đối phương đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
 
     "error.attachments_acceptance_required": "Tất cả mọi người cần đồng ý nhận đính kèm trước, sử dụng lệnh `%sallow` để đồng ý",
@@ -16,6 +16,7 @@
     "command.allow.short_help": "Kích hoạt nhận file đính kèm",
     "command.allow.long_help": "Kích hoạt nhận file đính kèm\n**[USAGE]**\n`%sallow` - Chỉ có thể sử dụng khi đã ghép đôi",
     "command.allow.already_allowed_attachments": "Bạn đã kích hoạt nhận file đính kèm rồi.",
+    "command.allow.user_allowed_attachments": "Bạn đã bật nhận file đính kèm.. [%s/%s]",
     "command.allow.partner_allowed_attachments": "Đối phương đã bật nhận file đính kèm.. [%s/%s]",
     "command.allow.activated_attachments": "Đã kích hoạt gửi/nhận file đính kèm cho cuộc trò chuyện này",
 
