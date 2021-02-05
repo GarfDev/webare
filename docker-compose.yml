@@ -1,7 +1,8 @@
 version: '3.7'
 
 services:
-  bot:
+  main-application:
+    image: main-application
     build: .
     env_file: ./.env
     restart: always
