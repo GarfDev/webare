@@ -56,12 +56,12 @@ function* callMatchCouple({ payload }: ReturnType<typeof matchCouple>) {
   const secUserDM = yield getDMChannelByUserId(secUser);
   yield firstUserDM?.send(
     successEmbedGenerator({
-      description: i('matched', getPrefix(), getPrefix())
+      description: i('matched', { prefix: getPrefix() })
     })
   );
   yield secUserDM?.send(
     successEmbedGenerator({
-      description: i('matched', getPrefix(), getPrefix())
+      description: i('matched', { prefix: getPrefix() })
     })
   );
 

@@ -1,5 +1,5 @@
 {   
-    "matched": "**Ghép đôi thành công, bạn có thể bắt đầu chat**\n Bạn có thể sử dụng lệnh `%sallow` để bật nhận file đính kèm và `%sleave` để thoát khỏi cuộc trò chuyện này.",
+    "matched": "**Ghép đôi thành công, bạn có thể bắt đầu chat**\n Bạn có thể sử dụng lệnh `{{prefix}}allow` để bật nhận file đính kèm và `{{prefix}}leave` để thoát khỏi cuộc trò chuyện này.",
     "conversation_is_ended": "Bạn đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
     "participant_is_ended": "Đối phương đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
 
