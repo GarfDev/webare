@@ -18,7 +18,7 @@ const leave: CommandHandler = async message => {
 
   if (!conversation?.activeConversation) {
     return failedEmbedGenerator({
-      description: i('error.not_in_any_conversation')
+      description: i('error.not_in_any_conversation', getPrefix())
     });
   }
 
