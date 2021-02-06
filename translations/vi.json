@@ -22,10 +22,11 @@
 
     "command.find.short_help": "Dùng để bắt đầu ghép đôi",
     "command.find.long_help": "Dùng để bắt đầu ghép đôi\n**[USAGE]**\n`%sfind` - Chỉ có thể sử dụng khi chưa ghép đôi",
-    "command.find.error.already_in_match_queue": "Đang tiến hành ghép đôi",
+    "command.find.error.already_in_match_queue": "Đang tiến hành ghép đôi. Có thể sử dụng `%sleave` để thoát.",
     "command.find.error.already_in_conversation": "Bạn cần thoát bằng lệnh `%sleave` trước để sử dụng lệnh này.",
-    "command.find.successfully_started": "Bắt đầu tiến trình ghép đôi",
+    "command.find.successfully_started": "Bắt đầu tiến trình ghép đôi. Có thể sử dụng `%sleave` để thoát.",
 
+    "command.leave.stop_matching_successfully": "Đã ngừng ghép đôi",
     "command.leave.short_help": "Thoát khỏi cuộc trò chuyện hiện tại",
     "command.leave.long_help": "Thoát khỏi cuộc trò chuyện hiện tại\n**[USAGE]**\n`%sleave` - Chỉ có thể sử dụng khi đã ghép đôi",
 

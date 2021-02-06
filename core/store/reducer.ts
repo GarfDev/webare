@@ -90,6 +90,15 @@ const rootReducer = (
       };
     }
     //
+    case ActionTypes.REMOVE_USER_FROM_MATCH_QUEUE: {
+      const { userId } = action.payload;
+      return {
+        ...state,
+        matchQueue: state.matchQueue.filter(id => id !== userId)
+      };
+    }
+
+    //
     case ActionTypes.MATCH_COUPLE_SUCCESS: {
       const { id, firstUser, secUser } = action.payload;
 

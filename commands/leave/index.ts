@@ -7,14 +7,28 @@ import {
   restoreConversations
 } from 'listeners/message/utils';
 import { removeConversationById } from 'core/firebase/firestore/collections/conversation/utils';
-import { useDispatch } from '@hooks';
-import { removeCachedConversation } from 'core/store/actions';
+import { useDispatch, useSelector } from '@hooks';
+import {
+  removeCachedConversation,
+  removeUserFromMatchQueue
+} from 'core/store/actions';
 import { i } from 'core/internationalize';
 import { getPrefix } from 'utils/messages';
+import { selectMatchQueue } from 'core/store/selectors';
 
 const leave: CommandHandler = async message => {
   const dispatch = useDispatch();
+  const matchQueue = useSelector(selectMatchQueue);
   const conversation = await restoreConversations(message.author.id);
+  const isOnMatchQueue = matchQueue.includes(message.author.id);
+
+  if (isOnMatchQueue) {
+    const dispatch = useDispatch();
+    dispatch(removeUserFromMatchQueue(message.author.id));
+    return failedEmbedGenerator({
+      description: i('command.leave.stop_matching_successfully')
+    });
+  }
 
   if (!conversation?.activeConversation) {
     return failedEmbedGenerator({

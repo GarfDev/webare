@@ -87,6 +87,9 @@ export const matchCoupleSuccess = (
 export const addUserToMatchQueue = (userId: string) =>
   action(ActionTypes.ADD_USER_TO_MATCH_QUEUE, { userId });
 
+export const removeUserFromMatchQueue = (userId: string) =>
+  action(ActionTypes.REMOVE_USER_FROM_MATCH_QUEUE, { userId });
+
 /**
  * Background runner actions
  */

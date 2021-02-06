@@ -2,10 +2,9 @@ import { CommandHandler } from 'types';
 import { listenerGenerator } from 'utils/command';
 import ListenerType from 'constants/ListenerType';
 import { failedEmbedGenerator, successEmbedGenerator } from 'utils/embed';
-import { useDispatch, useSelector } from '@hooks';
+import { useDispatch } from '@hooks';
 import { addUserToMatchQueue } from 'core/store/actions';
 import { restoreConversations } from 'listeners/message/utils';
-import { selectMatchQueue } from 'core/store/selectors';
 import { i } from 'core/internationalize';
 import { getPrefix } from 'utils/messages';
 
@@ -20,18 +19,10 @@ const find: CommandHandler = async message => {
     });
   }
 
-  const matchQueue = useSelector(selectMatchQueue);
-
-  if (matchQueue.includes(message.author.id)) {
-    return failedEmbedGenerator({
-      description: i('command.find.error.already_in_match_queue')
-    });
-  }
-
   dispatch(addUserToMatchQueue(message.author.id));
 
   return successEmbedGenerator({
-    description: i('command.find.successfully_started')
+    description: i('command.find.successfully_started', getPrefix())
   });
 };
 
