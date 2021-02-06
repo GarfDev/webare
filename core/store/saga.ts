@@ -47,7 +47,8 @@ function* callMatchCouple({ payload }: ReturnType<typeof matchCouple>) {
   const newConversation: Conversation = {
     id: newConversationId,
     participants: [firstUser, secUser],
-    allowed_attachments: []
+    allowed_attachments: [],
+    created_at: new Date().getTime()
   };
 
   yield conversationRef.doc(newConversationId).set(newConversation);

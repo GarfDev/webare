@@ -12,6 +12,7 @@ const report: CommandHandler = async () => {
 
   return successEmbedGenerator({
     description: `**Reported in ${new Date().toTimeString()}**
+        **[Business information]**
         Current Match Queue: **${matchQueue.length}**
         Active Conversations: **${(await conversationRef.get()).docs.length}**
         Active User: **${

@@ -96,19 +96,22 @@ const rootReducer = (
       const newConversation: Conversation = {
         id,
         participants: [firstUser, secUser],
-        allowed_attachments: []
+        allowed_attachments: [],
+        created_at: new Date().getTime()
       };
 
       const newFirstUserConversation: Conversation = {
         id,
         participants: [secUser],
-        allowed_attachments: []
+        allowed_attachments: [],
+        created_at: new Date().getTime()
       };
 
       const newSecUserConversation: Conversation = {
         id,
         participants: [firstUser],
-        allowed_attachments: []
+        allowed_attachments: [],
+        created_at: new Date().getTime()
       };
 
       const newFirstUserConversationState: UserConversationState = {

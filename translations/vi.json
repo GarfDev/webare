@@ -1,7 +1,7 @@
 {   
     "matched": "**Ghép đôi thành công, bạn có thể bắt đầu chat**\n Bạn có thể sử dụng lệnh `{{prefix}}allow` để bật nhận file đính kèm và `{{prefix}}leave` để thoát khỏi cuộc trò chuyện này.",
-    "conversation_is_ended": "Bạn đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
-    "participant_is_ended": "Đối phương đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `%sfind`.",
+    "conversation_is_ended": "Bạn đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `{{prefix}}find`.\n Invite bot về server của mình bằng lệnh `{{prefix}}invite`.",
+    "participant_is_ended": "Đối phương đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `{{prefix}}find`. Invite bot về server của mình bằng lệnh `{{prefix}}invite`.",
 
     "error.attachments_acceptance_required": "Tất cả mọi người cần đồng ý nhận đính kèm trước, sử dụng lệnh `%sallow` để đồng ý",
     "error.cannot_send_message_to_this_user": "Không thể gửi tin nhắn đến người dùng vào lúc này",
@@ -30,6 +30,10 @@
     "command.leave.long_help": "Thoát khỏi cuộc trò chuyện hiện tại\n**[USAGE]**\n`%sleave` - Chỉ có thể sử dụng khi đã ghép đôi",
 
     "command.help.short_help": "Tra về danh sách này nè",
-    "command.help.long_help": "Trả về danh sách các lệnh\n**[USAGE]**\n`%shelp`"
+    "command.help.long_help": "Trả về danh sách các lệnh\n**[USAGE]**\n`%shelp`",
+
+    "command.invite.click_here_to_invite": "**Nhấn vào đây để lấy invite**",
+    "command.invite.short_help": "Lấy link invite bot",
+    "command.invite.long_help": "Lấy link invite bot"
 
 }

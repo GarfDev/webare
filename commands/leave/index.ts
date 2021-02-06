@@ -1,7 +1,7 @@
 import { CommandHandler } from 'types';
 import { listenerGenerator } from 'utils/command';
 import ListenerType from 'constants/ListenerType';
-import { failedEmbedGenerator, successEmbedGenerator } from 'utils/embed';
+import { failedEmbedGenerator } from 'utils/embed';
 import {
   getDMChannelByUserId,
   restoreConversations
@@ -34,15 +34,15 @@ const leave: CommandHandler = async message => {
     const user = await getDMChannelByUserId(participant);
     setTimeout(() => {
       user.send(
-        successEmbedGenerator({
-          description: i('participant_is_ended', getPrefix())
+        failedEmbedGenerator({
+          description: i('participant_is_ended', { prefix: getPrefix() })
         })
       );
     }, 10);
   });
 
-  return successEmbedGenerator({
-    description: i('conversation_is_ended', getPrefix())
+  return failedEmbedGenerator({
+    description: i('conversation_is_ended', { prefix: getPrefix() })
   });
 };
 
