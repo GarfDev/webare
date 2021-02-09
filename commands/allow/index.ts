@@ -13,14 +13,22 @@ import { updateCachedConversation } from 'core/store/actions';
 import { useDispatch } from '@hooks';
 import { i } from 'core/internationalize';
 import { getPrefix } from 'utils/messages';
+import { restoreUsermetaById } from 'core/firebase/firestore/collections/usermeta';
 
 const allow: CommandHandler = async message => {
   const dispatch = useDispatch();
   let conversation = await restoreConversations(message.author.id);
+  const { location } = await restoreUsermetaById(message.author.id);
 
   if (!conversation?.activeConversation) {
     return failedEmbedGenerator({
-      description: i('error.not_in_any_conversation', getPrefix())
+      description: i(
+        {
+          phrase: 'error.not_in_any_conversation',
+          locale: location
+        },
+        getPrefix()
+      )
     });
   } else {
     const isAlreadyAllowedAttachments = conversation.activeConversation.allowed_attachments.includes(
@@ -29,7 +37,10 @@ const allow: CommandHandler = async message => {
 
     if (isAlreadyAllowedAttachments) {
       return failedEmbedGenerator({
-        description: i('command.allow.already_allowed_attachments')
+        description: i({
+          phrase: 'command.allow.already_allowed_attachments',
+          locale: location
+        })
       });
     }
 
@@ -47,7 +58,10 @@ const allow: CommandHandler = async message => {
           user.send(
             successEmbedGenerator({
               description: i(
-                'command.allow.partner_allowed_attachments',
+                {
+                  phrase: 'command.allow.partner_allowed_attachments',
+                  locale: location
+                },
                 allowedAttachments.toString(),
                 totalParticipants.toString()
               )
@@ -58,7 +72,10 @@ const allow: CommandHandler = async message => {
         setTimeout(() => {
           user.send(
             successEmbedGenerator({
-              description: i('command.allow.activated_attachments')
+              description: i({
+                phrase: 'command.allow.activated_attachments',
+                locale: location
+              })
             })
           );
         }, 100);
@@ -84,14 +101,20 @@ const allow: CommandHandler = async message => {
     if (allowedAttachments < totalParticipants) {
       return successEmbedGenerator({
         description: i(
-          'command.allow.user_allowed_attachments',
+          {
+            phrase: 'command.allow.user_allowed_attachments',
+            locale: location
+          },
           allowedAttachments.toString(),
           totalParticipants.toString()
         )
       });
     }
     return successEmbedGenerator({
-      description: i('command.allow.activated_attachments')
+      description: i({
+        phrase: 'command.allow.activated_attachments',
+        locale: location
+      })
     });
   }
 };

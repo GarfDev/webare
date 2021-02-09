@@ -7,22 +7,33 @@ import { addUserToMatchQueue } from 'core/store/actions';
 import { restoreConversations } from 'listeners/message/utils';
 import { i } from 'core/internationalize';
 import { getPrefix } from 'utils/messages';
+import { restoreUsermetaById } from 'core/firebase/firestore/collections/usermeta';
 
 const find: CommandHandler = async message => {
   const dispatch = useDispatch();
 
   const conversation = await restoreConversations(message.author.id);
+  const { location } = await restoreUsermetaById(message.author.id);
 
   if (conversation?.activeConversation) {
     return failedEmbedGenerator({
-      description: i('command.find.error.already_in_conversation', getPrefix())
+      description: i(
+        {
+          phrase: 'command.find.error.already_in_conversation',
+          locale: location
+        },
+        getPrefix()
+      )
     });
   }
 
   dispatch(addUserToMatchQueue(message.author.id));
 
   return successEmbedGenerator({
-    description: i('command.find.successfully_started', getPrefix())
+    description: i(
+      { phrase: 'command.find.successfully_started', locale: location },
+      getPrefix()
+    )
   });
 };
 

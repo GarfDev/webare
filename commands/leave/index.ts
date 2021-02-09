@@ -15,24 +15,32 @@ import {
 import { i } from 'core/internationalize';
 import { getPrefix } from 'utils/messages';
 import { selectMatchQueue } from 'core/store/selectors';
+import { restoreUsermetaById } from 'core/firebase/firestore/collections/usermeta';
 
 const leave: CommandHandler = async message => {
   const dispatch = useDispatch();
   const matchQueue = useSelector(selectMatchQueue);
   const conversation = await restoreConversations(message.author.id);
   const isOnMatchQueue = matchQueue.includes(message.author.id);
+  const { location } = await restoreUsermetaById(message.author.id);
 
   if (isOnMatchQueue) {
     const dispatch = useDispatch();
     dispatch(removeUserFromMatchQueue(message.author.id));
     return failedEmbedGenerator({
-      description: i('command.leave.stop_matching_successfully')
+      description: i({
+        phrase: 'command.leave.stop_matching_successfully',
+        locale: location
+      })
     });
   }
 
   if (!conversation?.activeConversation) {
     return failedEmbedGenerator({
-      description: i('error.not_in_any_conversation', getPrefix())
+      description: i(
+        { phrase: 'error.not_in_any_conversation', locale: location },
+        getPrefix()
+      )
     });
   }
 
@@ -49,14 +57,20 @@ const leave: CommandHandler = async message => {
     setTimeout(() => {
       user.send(
         failedEmbedGenerator({
-          description: i('participant_is_ended', { prefix: getPrefix() })
+          description: i(
+            { phrase: 'participant_is_ended', locale: location },
+            { prefix: getPrefix() }
+          )
         })
       );
     }, 10);
   });
 
   return failedEmbedGenerator({
-    description: i('conversation_is_ended', { prefix: getPrefix() })
+    description: i(
+      { phrase: 'conversation_is_ended', locale: location },
+      { prefix: getPrefix() }
+    )
   });
 };
 
