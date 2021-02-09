@@ -17,6 +17,6 @@ export default listenerGenerator({
   queued: true,
   handler: invite,
   type: ListenerType.GENERAL,
-  helpMessage: i('command.invite.short_help'),
-  usageMessage: i('command.invite.long_help')
+  helpMessage: 'command.invite.short_help',
+  usageMessage: 'command.invite.long_help'
 });

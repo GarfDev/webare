@@ -32,7 +32,7 @@ export default listenerGenerator({
   queued: true,
   handler: find,
   type: ListenerType.GENERAL,
-  helpMessage: i('command.find.short_help'),
-  usageMessage: i('command.find.long_help', getPrefix()),
+  helpMessage: 'command.find.short_help',
+  usageMessage: 'command.find.long_help',
   dmRequired: true
 });

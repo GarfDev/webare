@@ -1,3 +1,49 @@
 {
-	"hello": "hello"
+	"matched": "**Matched, you can start to chat now**\n Use `{{prefix}}allow` to enable attachments and `{{prefix}}leave` to leave current conversation.",
+	"conversation_is_ended": "Done, now you can match other people by `{{prefix}}find`.\n `{{prefix}}invite` if you want to invite **Webare** to your current server.",
+	"participant_is_ended": "Your partner is left, find other conversation by using `{{prefix}}find`. `{{prefix}}invite` if you want to invite **Webare** to your current server.",
+	"error.attachments_acceptance_required": "Everyone much be allow attachments first before you can send attachments, use `%sallow` to accept attachments",
+	"error.cannot_send_message_to_this_user": "Currently cannot send message to your partner",
+	"error.not_in_any_conversation": "You are not matched with anyone, use `%sfind` to find one.",
+	"error.cooldown_not_done": "You need to wait **%s**s before can use this command again",
+	"error.guild_required": "You can only use this command in a guild channel",
+	"error.dm_required": "You can only use this command in a DM channel",
+	"error.developer_required": "Only Developer can access this command",
+	"error.permission_error": "You don't have enough permissions to use this command",
+	"error.execution_error": "There error from my side, please report to developer this error behaviour.",
+	
+	"command.allow.short_help": "Allow Attachments",
+	"command.allow.long_help": "Allow Attachments\n**[USAGE]**\n`%sallow` - Can only use while matched",
+	"command.allow.already_allowed_attachments": "Attachments already allowed on your side.",
+	"command.allow.user_allowed_attachments": "You have allowed attachments.. [%s/%s]",
+	"command.allow.partner_allowed_attachments": "Your partner is allowed attachments.. [%s/%s]",
+	"command.allow.activated_attachments": "Attachments enabled, now you can send them in here",
+	
+	"command.find.short_help": "Start matching",
+	"command.find.long_help": "Start matching\n**[USAGE]**\n`%sfind` - Can only while not matching with anyone",
+	"command.find.error.already_in_match_queue": "Matching progress is still running. Use `%sleave` to leave.",
+	"command.find.error.already_in_conversation": "You need to leave with `%sleave` before can use this.",
+	"command.find.successfully_started": "Matching progress is successfully starting. Use `%sleave` to leave.",
+	
+	"command.leave.stop_matching_successfully": "Matching Canceled",
+	"command.leave.short_help": "To leave current conversation",
+	"command.leave.long_help": "To leave current conversation\n**[USAGE]**\n`%sleave` - Can only use while matched",
+	
+	"command.help.short_help": "Return help message",
+	"command.help.long_help": "Return a list of help message\n**[USAGE]**\n`%shelp`",
+	
+	"command.invite.click_here_to_invite": "**Click here to get Invitation link**",
+	"command.invite.short_help": "To Invite bot to your server",
+	"command.invite.long_help": "To Invite bot to your server",
+	
+	"command.set.short_help": "Customize bot based your own needs",
+	"command.set.long_help": "Customize bot based your own needs. current support setting list: `language`",
+	"command.set.language.short_help": "Change language setting `[vi/en]`",
+	"command.set.language.long_help": "Change language setting.\n**[USAGE]**\n{{prefix}}set language `[params]`\n**[EXAMPLE]**\n{{prefix}}set language en",
+	"command.set.language.success": "Successfully changed your language to **%s**",
+	"command.set.language.cannot_identify": "We currently not support this language.",
+
+	
+	"This command return a pong when you call it (Developer only)": "This command return a pong when you call it (Developer only)",
+	"This command return current state of the bot (Developer only)": "This command return current state of the bot (Developer only)"
 }

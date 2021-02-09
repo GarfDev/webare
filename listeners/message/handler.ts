@@ -1,3 +1,4 @@
+import { restoreUsermetaById } from 'core/firebase/firestore/collections/usermeta';
 import { i } from 'core/internationalize';
 import { Message } from 'discord.js';
 import { failedEmbedGenerator } from 'utils/embed';
@@ -5,12 +6,23 @@ import { getPrefix } from 'utils/messages';
 import { getDMChannelByUserId, restoreConversations } from './utils';
 
 const messageHandler = async (message: Message) => {
+  // Return if message from guild channels
   if (message.guild) return;
+
+  // Initialize values
+  const { location } = await restoreUsermetaById(message.author.id);
+
   const cachedUserConversation = await restoreConversations(message.author.id);
   if (!cachedUserConversation?.activeConversation) {
     message.channel.send(
       failedEmbedGenerator({
-        description: i('error.not_in_any_conversation', getPrefix())
+        description: i(
+          {
+            phrase: 'error.not_in_any_conversation',
+            locale: location
+          },
+          getPrefix()
+        )
       })
     );
   } else {
@@ -28,7 +40,10 @@ const messageHandler = async (message: Message) => {
             if (!channel)
               message.channel.send(
                 failedEmbedGenerator({
-                  description: i('error.cannot_send_message_to_this_user')
+                  description: i({
+                    phrase: 'error.cannot_send_message_to_this_user',
+                    locale: location
+                  })
                 })
               );
             channel?.send(message.content.toString(), {
@@ -39,7 +54,13 @@ const messageHandler = async (message: Message) => {
       } else {
         message.channel.send(
           failedEmbedGenerator({
-            description: i('error.attachments_acceptance_required', getPrefix())
+            description: i(
+              {
+                phrase: 'error.attachments_acceptance_required',
+                locale: location
+              },
+              getPrefix()
+            )
           })
         );
       }
@@ -50,7 +71,10 @@ const messageHandler = async (message: Message) => {
           if (!channel)
             message.channel.send(
               failedEmbedGenerator({
-                description: i('error.cannot_send_message_to_this_user')
+                description: i({
+                  phrase: 'error.cannot_send_message_to_this_user',
+                  locale: location
+                })
               })
             );
           channel?.send('\u200B' + message.content.toString());

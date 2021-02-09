@@ -4,6 +4,7 @@ import { CommandHandler, CommandListenerMeta } from 'types';
 import ActionTypes from './actionTypes';
 import { UserConversationState } from './types';
 import { Conversation } from 'core/firebase/firestore/collections/conversation';
+import { Usermeta } from 'core/firebase/firestore/collections/usermeta';
 
 /**
  * General actions
@@ -89,6 +90,12 @@ export const addUserToMatchQueue = (userId: string) =>
 
 export const removeUserFromMatchQueue = (userId: string) =>
   action(ActionTypes.REMOVE_USER_FROM_MATCH_QUEUE, { userId });
+
+export const cacheUsermeta = (id: string, meta: Usermeta) =>
+  action(ActionTypes.CACHE_USER_META, {
+    id,
+    meta
+  });
 
 /**
  * Background runner actions

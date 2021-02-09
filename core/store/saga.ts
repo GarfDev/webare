@@ -113,7 +113,6 @@ function commandObjTraveler(
     currentDepth = currentDepth[param] as any;
     progressedParams.shift();
   }
-
   return [currentDepth, progressedParams];
 }
 

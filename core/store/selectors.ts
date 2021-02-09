@@ -13,6 +13,11 @@ export const userDataSelector = createSelector(
   state => state.user
 );
 
+export const usermetaSelector = createSelector(
+  rootSelector,
+  state => state.usermeta
+);
+
 export const ownerIdSelector = createSelector(
   metadataSelector,
   state => state.ownerId
@@ -41,3 +46,6 @@ export const selectCooldownById = (userId: string) =>
 
 export const selectUserById = (userId: string) =>
   createSelector(userDataSelector, state => state[userId] || undefined);
+
+export const selectUsermetaById = (userId: string) =>
+  createSelector(usermetaSelector, state => state[userId]);

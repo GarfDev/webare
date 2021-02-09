@@ -103,6 +103,6 @@ export default listenerGenerator({
   handler: allow,
   dmRequired: true,
   type: ListenerType.GENERAL,
-  helpMessage: i('command.allow.short_help'),
-  usageMessage: i('command.allow.long_help', getPrefix())
+  helpMessage: 'command.allow.short_help',
+  usageMessage: 'command.allow.long_help'
 });

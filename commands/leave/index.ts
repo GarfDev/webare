@@ -67,6 +67,6 @@ export default listenerGenerator({
   handler: leave,
   dmRequired: true,
   type: ListenerType.GENERAL,
-  helpMessage: i('command.leave.short_help'),
-  usageMessage: i('command.leave.long_help', getPrefix())
+  helpMessage: 'command.leave.short_help',
+  usageMessage: 'command.leave.long_help'
 });

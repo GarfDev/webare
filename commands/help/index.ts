@@ -6,10 +6,11 @@ import ListenerType from 'constants/ListenerType';
 import { commandMetaSelector } from 'core/store/selectors';
 import { addCommandsToEmbed, getCommandMetaByType } from './utils';
 import Colors from 'constants/Colors';
-import { i } from 'core/internationalize';
+import { restoreUsermetaById } from 'core/firebase/firestore/collections/usermeta';
 import { getPrefix } from 'utils/messages';
 
 const help: CommandHandler = async message => {
+  const { location } = await restoreUsermetaById(message.author.id);
   const commandMeta = useSelector(commandMetaSelector);
   let returnEmbed = embedGenerator({});
 
@@ -28,9 +29,17 @@ const help: CommandHandler = async message => {
     returnEmbed = addCommandsToEmbed(
       returnEmbed,
       type as ListenerType,
-      commands
+      commands,
+      location
     );
   });
+
+  // Change Footer
+  returnEmbed.addField(
+    'Language Helper',
+    `Use \`${getPrefix()}set language [lang]\` for switch to your language, example: \`?set language en\`.`,
+    true
+  );
 
   // Main return
   return returnEmbed;
@@ -40,6 +49,6 @@ export default listenerGenerator({
   name: 'help',
   handler: help,
   type: ListenerType.GENERAL,
-  helpMessage: i('command.help.short_help'),
-  usageMessage: i('command.help.long_help', getPrefix())
+  helpMessage: 'command.help.short_help',
+  usageMessage: 'command.help.long_help'
 });

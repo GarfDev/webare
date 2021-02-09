@@ -9,6 +9,8 @@ import { failedEmbedGenerator } from 'utils/embed';
 import inLast from 'utils/inLast';
 import { getLogger } from '..';
 import { i } from 'core/internationalize';
+import { restoreUsermetaById } from 'core/firebase/firestore/collections/usermeta';
+import { getPrefix } from 'utils/messages';
 
 const listenerGenerator: CommandListener = ({
   name,
@@ -30,18 +32,27 @@ const listenerGenerator: CommandListener = ({
   })();
   // Inner scope
   return async (message, params) => {
+    // Initialize needed values
+    const { location } = await restoreUsermetaById(message.author.id);
+
     // Check if guild required
     if (guildRequired) {
       if (!message?.guild)
         return failedEmbedGenerator({
-          description: i('error.guild_required')
+          description: i({
+            phrase: 'error.guild_required',
+            locale: location
+          })
         });
     }
     // Check if DM is required
     if (dmRequired) {
       if (message?.guild)
         return failedEmbedGenerator({
-          description: i('error.dm_required')
+          description: i({
+            phrase: 'error.dm_required',
+            locale: location
+          })
         });
     }
 
@@ -53,7 +64,7 @@ const listenerGenerator: CommandListener = ({
 
     if (!paramsValid)
       return failedEmbedGenerator({
-        description: usageMessage
+        description: i(usageMessage, { prefix: getPrefix() })
       });
 
     // Check Developer
@@ -63,7 +74,10 @@ const listenerGenerator: CommandListener = ({
       const isDeveloper = developerId === message.author.id;
       if (!isDeveloper)
         return failedEmbedGenerator({
-          description: i('error.developer_required')
+          description: i({
+            phrase: 'error.developer_required',
+            locale: location
+          })
         });
     }
 
@@ -81,7 +95,7 @@ const listenerGenerator: CommandListener = ({
         : true;
       if (!validPermissions)
         return failedEmbedGenerator({
-          description: i('error.permission_error')
+          description: i({ phrase: 'error.permission_error', locale: location })
         });
     }
 
@@ -89,7 +103,10 @@ const listenerGenerator: CommandListener = ({
     // there no command handler
     if (!handler) {
       return failedEmbedGenerator({
-        description: usageMessage
+        description: i(
+          { phrase: usageMessage, locale: location },
+          { prefix: getPrefix() }
+        )
       });
     }
 
@@ -106,7 +123,10 @@ const listenerGenerator: CommandListener = ({
       ).toFixed(2);
       //////////////////////
       return failedEmbedGenerator({
-        description: i('error.cooldown_not_done', timeRemain)
+        description: i(
+          { phrase: 'error.cooldown_not_done', locale: location },
+          timeRemain
+        )
       });
     }
 
@@ -120,7 +140,7 @@ const listenerGenerator: CommandListener = ({
       const logger = getLogger();
       logger.error(error.message);
       return failedEmbedGenerator({
-        description: i('error.execution_error')
+        description: i({ phrase: 'error.execution_error', locale: location })
       });
     }
   };

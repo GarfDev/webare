@@ -14,6 +14,7 @@ import { updateUserConversationState } from './utils';
 const initialRootState: ApplicationRootState = {
   user: {},
   cooldown: {},
+  usermeta: {},
   matchQueue: [],
   meta: {
     commands: {},
@@ -241,6 +242,17 @@ const rootReducer = (
       return {
         ...state,
         user: newUserState
+      };
+    }
+    // Usermeta actions
+    case ActionTypes.CACHE_USER_META: {
+      const { id, meta } = action.payload;
+      return {
+        ...state,
+        usermeta: {
+          ...state.usermeta,
+          [id]: meta
+        }
       };
     }
     //

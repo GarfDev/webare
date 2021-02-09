@@ -51,30 +51,34 @@ const commandListenerRegister = () => {
         const commandPaths = files.map(
           compose(commandFolderRemover, removeTailSlash)
         );
+
         const spitedCommandPaths = commandPaths.map(path => path.split('/'));
 
         // Register Paths to an Object
 
         spitedCommandPaths.forEach(pathArray => {
           let currentDepth = commandObj;
+          const addArray: string[] = [];
 
           pathArray.forEach(item => {
             if (!currentDepth[item]) {
               currentDepth[item] = {};
             }
-
+            addArray.push(item);
+            currentDepth = currentDepth[item] as any;
             const filePath = path.join(
               fromRootPath(commandFolder),
-              ...pathArray
+              ...addArray
             );
+
             const module: CommandHandler = getModules(filePath).default;
 
             if (!module) throw new CommandListenerNotFound(filePath);
 
-            currentDepth = currentDepth[item] as any;
             currentDepth.default = module;
           });
         });
+
         initialized = true;
         cachedCommandObj = commandObj;
         resolve(commandObj);
