@@ -25,7 +25,8 @@ import {
   fromRootPath,
   backgroundRunnerRegister,
   measureElapsed,
-  getLogger
+  getLogger,
+  capitalize
 } from 'utils';
 import { getCommand, getPrefix } from 'utils/messages';
 import { commandListenerRegister } from 'utils/command';
@@ -98,7 +99,9 @@ function commandObjTraveler(
     // Handle first param include  //
     // Application prefix          //
     if (i === 0) {
-      param = param.replace(getPrefix(), '');
+      param = param
+        .replace(getPrefix(), '')
+        .replace(capitalize(getPrefix()), '');
     }
     // Return if cannot find current param
     // In object. And use remain as function param
