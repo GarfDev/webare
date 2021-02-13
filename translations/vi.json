@@ -1,5 +1,6 @@
 {
-	"matched": "**Ghép đôi thành công, bạn có thể bắt đầu chat**\n Bạn có thể sử dụng lệnh `{{prefix}}allow` để bật nhận file đính kèm và `{{prefix}}leave` để thoát khỏi cuộc trò chuyện này.",
+	"matched.title": "**Ghép đôi thành công, chào bạn mới đi nè**",
+	"matched": "Bạn có thể sử dụng lệnh `{{prefix}}allow` để bật nhận file đính kèm và `{{prefix}}leave` để thoát khỏi cuộc trò chuyện này.",
 	"conversation_is_ended": "Bạn đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `{{prefix}}find`.\n Invite bot về server của mình bằng lệnh `{{prefix}}invite`.",
 	"participant_is_ended": "Đối phương đã thoát, bạn có thể tiếp tục ghép đôi bằng lệnh `{{prefix}}find`. Invite bot về server của mình bằng lệnh `{{prefix}}invite`.",
 	"error.attachments_acceptance_required": "Tất cả mọi người cần đồng ý nhận đính kèm trước, sử dụng lệnh `%sallow` để đồng ý",

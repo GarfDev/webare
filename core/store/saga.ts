@@ -38,6 +38,7 @@ import { getDMChannelByUserId } from 'listeners/message/utils';
 import { successEmbedGenerator } from 'utils/embed';
 import { i } from 'core/internationalize';
 import messageHandler from 'listeners/message/handler';
+import { restoreUsermetaById } from 'core/firebase/firestore/collections/usermeta';
 
 function* callMatchCouple({ payload }: ReturnType<typeof matchCouple>) {
   const { firstUser, secUser } = payload;
@@ -56,9 +57,17 @@ function* callMatchCouple({ payload }: ReturnType<typeof matchCouple>) {
   // Send message to new user
   const firstUserDM = yield getDMChannelByUserId(firstUser);
   const secUserDM = yield getDMChannelByUserId(secUser);
+
+  const firstUserMeta = yield restoreUsermetaById(firstUser);
+  const secUserMeta = yield restoreUsermetaById(secUser);
+
   yield firstUserDM?.send(
     successEmbedGenerator({
-      description: i('matched', { prefix: getPrefix() })
+      title: i({ phrase: 'matched.title', locale: firstUserMeta.location }),
+      description: i(
+        { phrase: 'matched', locale: secUserMeta.location },
+        { prefix: getPrefix() }
+      )
     })
   );
   yield secUserDM?.send(

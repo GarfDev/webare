@@ -1,5 +1,6 @@
 {
-	"matched": "**Matched, you can start to chat now**\n Use `{{prefix}}allow` to enable attachments and `{{prefix}}leave` to leave current conversation.",
+	"matched.title": "**Matched, now you can say hello to other**",
+	"matched": "Use `{{prefix}}allow` to enable attachments and `{{prefix}}leave` to leave current conversation.",
 	"conversation_is_ended": "Done, now you can match other people by `{{prefix}}find`.\n `{{prefix}}invite` if you want to invite **Webare** to your current server.",
 	"participant_is_ended": "Your partner is left, find other conversation by using `{{prefix}}find`. `{{prefix}}invite` if you want to invite **Webare** to your current server.",
 	"error.attachments_acceptance_required": "Everyone much be allow attachments first before you can send attachments, use `%sallow` to accept attachments",
