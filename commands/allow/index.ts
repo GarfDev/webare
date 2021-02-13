@@ -45,7 +45,7 @@ const allow: CommandHandler = async message => {
     }
 
     const allowedAttachments =
-      conversation.activeConversation.allowed_attachments.length || 0;
+      conversation.activeConversation.allowed_attachments.length + 1;
 
     const totalParticipants =
       (conversation.activeConversation.participants.length || 0) + 1;
